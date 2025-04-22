@@ -74,6 +74,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, { once: true });
             }
         }, false);
+        
+        // Handle orientation change
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                // Re-adjust font size after orientation change
+                const gridSize = parseInt(gridSizeSelect.value);
+                adjustCellFontSize(gridSize);
+            }, 300);
+        });
+        
+        // Listen for grid size changes and update UI accordingly
+        gridSizeSelect.addEventListener('change', function() {
+            // If on small mobile and user selects 5x5, show warning
+            if (window.innerWidth < 360 && this.value === '5') {
+                alert('Hinweis: 5x5 kann auf kleinen Bildschirmen schwer lesbar sein. Drehe dein Gerät ins Querformat für bessere Ansicht.');
+            }
+        });
+    }
+    
+    // Set default grid size based on screen width
+    if (isMobile && window.innerWidth < 480) {
+        // Default to 3x3 on small mobile devices
+        gridSizeSelect.value = '3';
     }
     
     // Generate initial board
@@ -108,6 +131,11 @@ document.addEventListener('DOMContentLoaded', () => {
         bingoBoard.innerHTML = '';
         bingoBoard.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
         
+        // Remove any previous size classes
+        bingoBoard.classList.remove('size-3', 'size-4', 'size-5');
+        // Add current size class
+        bingoBoard.classList.add(`size-${gridSize}`);
+        
         // Calculate center position for free space
         const centerPos = useFreeSpace ? Math.floor(totalCells / 2) : -1;
         
@@ -117,15 +145,49 @@ document.addEventListener('DOMContentLoaded', () => {
             const cell = document.createElement('div');
             cell.classList.add('bingo-cell');
             
+            // Truncate very long text on mobile
+            let cellText = entries[entryIndex];
+            if (isMobile && cellText && cellText.length > 30) {
+                cellText = cellText.substring(0, 27) + '...';
+            }
+            
             if (useFreeSpace && i === centerPos) {
                 cell.textContent = 'FREI';
                 cell.classList.add('free-space');
             } else {
-                cell.textContent = entries[entryIndex++];
+                cell.textContent = cellText || entries[entryIndex];
+                entryIndex++;
             }
             
             bingoBoard.appendChild(cell);
         }
+        
+        // Adjust font size based on grid size and screen size
+        adjustCellFontSize(gridSize);
+    }
+    
+    // Function to adjust cell font size based on grid size and screen width
+    function adjustCellFontSize(gridSize) {
+        const cells = document.querySelectorAll('.bingo-cell');
+        const baseFontSize = isMobile ? 12 : 14;
+        
+        // Adjust font size based on grid size
+        let fontSize = baseFontSize;
+        if (gridSize === 4) {
+            fontSize = isMobile ? 10 : 13;
+        } else if (gridSize === 5) {
+            fontSize = isMobile ? 9 : 12;
+        }
+        
+        // Further reduce for very small screens
+        if (window.innerWidth < 360 && gridSize > 3) {
+            fontSize -= 2;
+        }
+        
+        // Apply font size to all cells
+        cells.forEach(cell => {
+            cell.style.fontSize = `${fontSize}px`;
+        });
     }
     
     // Function to share bingo board (for mobile)

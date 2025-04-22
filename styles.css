@@ -55,9 +55,18 @@ textarea {
 }
 
 select {
-    padding: 5px 10px;
+    padding: 8px 12px;
     border-radius: 5px;
     border: 1px solid #ddd;
+    font-size: 16px; /* Prevents zoom on iOS */
+    background-color: white;
+    -webkit-appearance: none; /* Removes default styling on iOS */
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 30px; /* Space for the arrow */
 }
 
 button {
@@ -98,6 +107,10 @@ button:hover {
     grid-template-columns: repeat(5, 1fr);
     gap: 10px;
     margin-top: 20px;
+    width: 100%;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .bingo-cell {
@@ -178,10 +191,10 @@ button:hover {
     .mobile-only {
         display: block;
     }
-    body {
-        padding: 10px;
+    .size-selector label {
+        margin-right: 10px;
+        display: inline-block;
     }
-    
     .container {
         padding: 15px;
     }
@@ -244,12 +257,33 @@ button:hover {
     }
     
     .bingo-board {
-        gap: 5px;
+        gap: 4px;
     }
     
     .bingo-cell {
-        font-size: 10px;
-        padding: 3px;
+        font-size: 9px;
+        padding: 2px;
         border-width: 1px;
+        height: auto;
+        min-height: 40px;
+    }
+    
+    /* Better dropdown on mobile */
+    select {
+        width: 100%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    
+    .size-selector, .free-space-option {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    /* Force 3x3 grid on very small screens */
+    @media (max-width: 320px) {
+        .bingo-board.size-5 {
+            grid-template-columns: repeat(3, 1fr);
+        }
     }
 }
