@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Reise Bingo Generator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Reise Bingo Generator</h1>
+        
+        <div class="input-section">
+            <h2>Bingo-Einträge</h2>
+            <p>Füge hier deine Bingo-Einträge ein (ein Eintrag pro Zeile):</p>
+            <textarea id="bingoEntries" rows="8" placeholder="z.B.&#10;Hat sich verlaufen&#10;Postet Sonnenuntergang&#10;Beschwert sich über Touristen&#10;'Authentisches' Erlebnis&#10;..."></textarea>
+            
+            <div class="options">
+                <div class="size-selector">
+                    <label for="gridSize">Bingo-Größe:</label>
+                    <select id="gridSize">
+                        <option value="3">3x3</option>
+                        <option value="4">4x4</option>
+                        <option value="5" selected>5x5</option>
+                    </select>
+                </div>
+                
+                <div class="free-space-option">
+                    <input type="checkbox" id="freeSpace" checked>
+                    <label for="freeSpace">Freies Feld in der Mitte</label>
+                </div>
+            </div>
+            
+            <button id="generateBtn">Bingo erstellen</button>
+            <div class="mobile-note">
+                <p><small>Tipp: Im Querformat wird das Bingo-Board auf dem Handy besser angezeigt</small></p>
+            </div>
+        </div>
+        
+        <div class="output-section">
+            <div class="controls">
+                <button id="printBtn">Drucken</button>
+                <button id="newBoardBtn">Neues Board</button>
+                <button id="shareBtn" class="mobile-only">Teilen</button>
+            </div>
+            
+            <div id="bingoBoard" class="bingo-board"></div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
